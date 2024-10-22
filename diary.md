@@ -11,3 +11,4 @@ Xinchen Yu: API is not a good choice because queue is long. Seems like other use
 
 10/22/2024
 Xinchen Yu: Doing conda setups.
+Dat Dao: Setup env on the server + Research on the recent model for Image Captioning (pixtral/molmo)

@@ -12,3 +12,6 @@ Xinchen Yu: API is not a good choice because queue is long. Seems like other use
 10/22/2024
 Xinchen Yu: Doing conda setups.
 Dat Dao: Setup env on the server + Research on the recent model for Image Captioning (pixtral/molmo)
+
+10/24/2024
+Xinchen Yu: It seems like conda virtual environment is constructed successfully. The API for LTU-AS works, trying to do the local inference. Need to find a way to convert sample rate to 16khz. Then cross-validation methods.

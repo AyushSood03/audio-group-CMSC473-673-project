@@ -15,3 +15,6 @@ Dat Dao: Setup env on the server + Research on the recent model for Image Captio
 
 10/24/2024
 Xinchen Yu: It seems like conda virtual environment is constructed successfully. The API for LTU-AS works, trying to do the local inference. Need to find a way to convert sample rate to 16khz. Then cross-validation methods.
+
+10/29/2024
+Xinchen Yu: Trying to understand how gradio work, and how LTU-AS inference script work.

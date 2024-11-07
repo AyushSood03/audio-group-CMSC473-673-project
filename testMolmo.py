@@ -23,7 +23,7 @@ print('MODEL')
 
 # process the image and text
 inputs = processor.process(
-    images=[Image.open(requests.get("https://picsum.photos/id/237/536/354", stream=True).raw)],
+    images=[Image.open("Dog.jpg")],
     text="Describe this image."
 )
 
@@ -43,6 +43,3 @@ generated_text = processor.tokenizer.decode(generated_tokens, skip_special_token
 
 # print the generated text
 print(generated_text)
-
-# >>> This photograph captures an adorable black Labrador puppy sitting on a weathered
-#     wooden deck. The deck's planks, which are a mix of light and dark brown with ...

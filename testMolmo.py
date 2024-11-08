@@ -1,11 +1,14 @@
-from transformers import AutoModelForCausalLM, AutoProcessor, GenerationConfig
+import os
 from PIL import Image
-import requests
+from transformers import AutoModelForCausalLM, AutoProcessor, GenerationConfig
 import torch
 import time
 
+image_folder = "images"
+output_file = "image_descriptions.txt"
+
+# Load the processor and model
 with torch.no_grad():
-    # load the processor
     processor = AutoProcessor.from_pretrained(
         'allenai/Molmo-7B-O-0924',
         trust_remote_code=True,
@@ -13,40 +16,52 @@ with torch.no_grad():
         device_map='auto',
         cache_dir='/fs/class-projects/fall2024/cmsc473/c473g000/hf_cache',
     )
-    print('PROCESSOR')
-    # print(processor.dtype)
-    # load the model
     model = AutoModelForCausalLM.from_pretrained(
         'allenai/Molmo-7B-O-0924',
         trust_remote_code=True,
         torch_dtype="auto",
         device_map='auto',
         cache_dir='/fs/class-projects/fall2024/cmsc473/c473g000/hf_cache',
-        )
-    print('MODEL')
-    print(model.dtype)
-
-    start = time.time()
-    # process the image and text
-    inputs = processor.process(
-        images=[Image.open(requests.get("https://picsum.photos/id/237/536/354", stream=True).raw)],
-        text="Describe this image."
     )
 
-    # move inputs to the correct device and make a batch of size 1
-    inputs = {k: v.to(device=model.device).unsqueeze(0) for k, v in inputs.items()}
+    # Open the output file in write mode
+    with open(output_file, "w") as f:
+        # Loop through each file in the folder
+        for filename in os.listdir(image_folder):
+            image_path = os.path.join(image_folder, filename)
+            
+            try:
+                with Image.open(image_path).convert("RGB") as image:
+                    start = time.time()
 
-    # generate output; maximum 200 new tokens; stop generation when <|endoftext|> is generated
-    output = model.generate_from_batch(
-        inputs,
-        GenerationConfig(max_new_tokens=200, stop_strings="<|endoftext|>"),
-        tokenizer=processor.tokenizer
-    )
+                    # Process the image and text
+                    inputs = processor.process(
+                        images=[image],
+                        text="Describe this image."
+                    )
 
-    # only get generated tokens; decode them to text
-    generated_tokens = output[0,inputs['input_ids'].size(1):]
-    generated_text = processor.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+                    inputs = {k: v.to(device=model.device).unsqueeze(0) for k, v in inputs.items()}
 
-    # print the generated text
-    print(generated_text)
-    print(time.time()-start)
+                    # Generate output with max 200 new tokens, stop when "<|endoftext|>" is reached
+                    output = model.generate_from_batch(
+                        inputs,
+                        GenerationConfig(max_new_tokens=200, stop_strings="<|endoftext|>"),
+                        tokenizer=processor.tokenizer
+                    )
+
+                    # Only get generated tokens; decode them to text
+                    generated_tokens = output[0, inputs['input_ids'].size(1):]
+                    generated_text = processor.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+                    # Save the result in the specified format
+                    f.write(f"{filename} - '{generated_text}'\n")
+
+                    # Print the generated text and time taken
+                    print(f"{filename}: {generated_text}")
+                    print("Time taken:", time.time() - start)
+            
+            except (IOError, Image.UnidentifiedImageError):
+                # If the file is not a valid image, skip it
+                print(f"Skipping file {filename}: not a valid image.")
+
+    print(f"Descriptions saved to {output_file}")

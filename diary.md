@@ -28,3 +28,5 @@ https://stackoverflow.com/questions/46204992/how-can-i-extract-the-audio-embeddi
 
 11/12/2024
 Xinchen Yu: LTU-AS can run now, --mem=64G is needed to load all the models. The gradio page can be created now. However, it fails to give output. Need further debug to make it work. A bad news is that both the APIs for LTU and LTU-AS are dead. ERROR is shown on the huggingface gradio page. The UI of local inference gradio is different from the UI of the demo page LTU-AS (in my memory, since the page is down for some reason). Hopefully the models are the same.
+
+11/14/2024 Xinchen Yu: LTU-AS requires ffmpeg for whisper feature extracting. However, the NEXUS server does not have packages for easy ffmpeg installation. ffmpeg python package is not working as well, since it looks like the whisper feature extracting code use local installed ffmpeg instead of a package. Manually extracting whisper feature also requires a lot of time for composing a json file for dataset. The next step is to try to implement GAMA.

@@ -24,10 +24,10 @@ This guide will help you run the code to generate auditory-focused descriptions 
      srun --partition=<node_size> --account=class --qos=<priority> --gres=gpu:<gpu_type>:<number_of_gpus> --pty bash
      ```
    - Example Fill-ins:
-      <node_size>: small, medium, etc.
-      <priority>: medium, low, etc.
-      <gpu_type>: rtxa5000, a100, etc.
-      <number_of_gpus>: Number of GPUs to request, e.g., 1, 2.
+      - <node_size>: small, medium, etc.
+      - <priority>: medium, low, etc.
+      - <gpu_type>: rtxa5000, a100, etc.
+      - <number_of_gpus>: Number of GPUs to request, e.g., 1, 2.
       Replace placeholders as needed before running.
 
 ### 4. **Test GPU Access**

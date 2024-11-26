@@ -29,16 +29,19 @@ def clean_data_labels(data_path, label_json_path, output_path = None):
     return df
 
 
-def cleaning(label):
+def cleaning(label, clean):
     label = label.replace('"', '').replace(' ', '')
     return ';'.join([clean[i] for i in label.split(';')])
 
 
 def download_video(video_url):
-    opts = {'paths': {'home': 'downloads'}}
+    opts = {'paths': {'home': '/fs/class-projects/fall2024/cmsc473/c473g000/downloads'}}
     with YoutubeDL(opts) as yt:
-        yt.download(video_url)
-    print(f"Downloaded video: {video_url}")
+        try: 
+            yt.download(video_url)
+            print(f"Downloaded video: {video_url}")
+        except:
+            print(f"Download failed: {video_url}")
 
 
 def download_column(yt_ids, stop=None):
@@ -69,17 +72,20 @@ def get_timestamps(yt_ids, start, stop=None):
 # Taken from https://www.scraperapi.com/blog/how-to-scrape-youtube/
 ## Downloading a YouTube Video
 def download_video(video_url):
-    opts = {'paths': {'home': 'downloads'}}
+    opts = {'paths': {'home': '/fs/class-projects/fall2024/cmsc473/c473g000/downloads'}}
     with YoutubeDL(opts) as yt:
-        yt.download(video_url)
-    print(f"Downloaded video: {video_url}")
+        try:
+            yt.download(video_url)
+            print(f"Downloaded video: {video_url}")
+        except:
+            print(f"Downloaded failed: {video_url}")
 
 
 def main():
-    df = clean_data_labels('/content/eval_segments_reg_clean.csv', '/content/ontology.json')
-    df = pd.read_csv('/content/eval_segments_reg_clean.csv')
+    df = clean_data_labels('/fs/class-projects/fall2024/cmsc473/c473g000/eval_segments_reg_clean.csv', '/fs/class-projects/fall2024/cmsc473/c473g000/ontology.json')
+    df = pd.read_csv('/fs/class-projects/fall2024/cmsc473/c473g000/eval_segments_reg_clean.csv')
     # Path to your JSON file
-    file_path = '/content/ontology.json'
+    file_path = '/fs/class-projects/fall2024/cmsc473/c473g000/ontology.json'
 
     # Open the file and load the data
     with open(file_path, 'r') as file:
@@ -87,36 +93,38 @@ def main():
 
     clean = {dictionary['id'] : dictionary['name'] for dictionary in data}
 
-    df['real'] = df[' positive_labels'].apply(cleaning)
+    df['real'] = df[' positive_labels'].apply(cleaning, args=(clean,))
 
-    for i in range(0, len(df.iterrows()), BATCH_SIZE):
+    print(df.columns)
+
+    for i in range(0, len(df), BATCH_SIZE):
         yt_ids = []
         for j in range(i, i + BATCH_SIZE):
             yt_ids.append(df.iloc[j]['# YTID'])
         download_column_2(yt_ids, i)
 
-        for file in os.listdir('downloads'):
+        for file in os.listdir('/fs/class-projects/fall2024/cmsc473/c473g000/downloads'):
             filename = os.fsdecode(file)
             extension = filename.split(".")[1]
             row = df.loc[df['# YTID'] == (filename.split('['))[1].split(']')[0]]
-            ffmpeg_extract_subclip(f"{filename}", int(float(row['start seconds'])), int(float(row['end seconds'])), targetname=f"{filename.split(".")[0]}_cut.{extension}")
+
+            ffmpeg_extract_subclip(f"/fs/class-projects/fall2024/cmsc473/c473g000/downloads/{filename}", int(float(row[' start_seconds'])), int(float(row[' end_seconds'])), outputfile=f'/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split(".")[0]}_cut.{extension}')
 
             vd = Video()
             no_of_frames_to_returned = 1
             # initialize diskwriter to save data at desired location
-            diskwriter = KeyFrameDiskWriter(location="selectedframes")
+            diskwriter = KeyFrameDiskWriter(location="/fs/class-projects/fall2024/cmsc473/c473g000/selectedframes")
 
             # Video file path
-            video_file_path = f"{filename}_cut.mkv"
+            video_file_path = f'/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split(".")[0]}_cut.{extension}'
 
-              # extract keyframes and process data with diskwriter
+            # extract keyframes and process data with diskwriter
             vd.extract_video_keyframes(
                 no_of_frames=no_of_frames_to_returned, file_path=video_file_path,
-                writer=diskwriter
-            )
+                writer=diskwriter)
 
-            os.remove(filename)
-            os.remove(f"{filename.split(".")[0]}_cut.{extension}")
+            os.remove(f"/fs/class-projects/fall2024/cmsc473/c473g000/downloads/{filename}")
+            os.remove(f'/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split(".")[0]}_cut.{extension}')
 
 
 if __name__ == '__main__':

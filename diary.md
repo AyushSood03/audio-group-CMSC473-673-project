@@ -32,3 +32,6 @@ Xinchen Yu: LTU-AS can run now, --mem=64G is needed to load all the models. The 
 11/14/2024 Xinchen Yu: LTU-AS requires ffmpeg for whisper feature extracting. However, the NEXUS server does not have packages for easy ffmpeg installation. ffmpeg python package is not working as well, since it looks like the whisper feature extracting code use local installed ffmpeg instead of a package. Manually extracting whisper feature also requires a lot of time for composing a json file for dataset. The next step is to try to implement GAMA.
 
 11/19/2024 Xinchen Yu: GAMA successfully deployed on NEXUS server.
+
+11/26/2024 Xinchen Yu: aac-metrics package requires some strange depency of JAVA, I cannot understand how to utilize it. Switching to other SPICE matrix github program.
+

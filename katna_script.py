@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import json
 from yt_dlp import YoutubeDL
 from bs4 import BeautifulSoup
@@ -6,6 +7,7 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from Katna.video import Video
 from Katna.writer import KeyFrameDiskWriter
 import os
+import cv2
 
 YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v="
 BATCH_SIZE = 10
@@ -108,7 +110,30 @@ def main():
             extension = filename.split(".")[1]
             row = df.loc[df['# YTID'] == (filename.split('['))[1].split(']')[0]]
 
-            ffmpeg_extract_subclip(f"/fs/class-projects/fall2024/cmsc473/c473g000/downloads/{filename}", int(float(row[' start_seconds'])), int(float(row[' end_seconds'])), outputfile=f'/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split(".")[0]}_cut.{extension}')
+            # ffmpeg_extract_subclip(f"/fs/class-projects/fall2024/cmsc473/c473g000/downloads/{filename}", float(row[' start_seconds']), float(row[' end_seconds']), f"/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split('.')[0]}_cut.{extension}")
+            # attempt at a opencv/numpy approach:
+            frames = []
+
+            cap = cv2.VideoCapture(f"/fs/class-projects/fall2024/cmsc473/c473g000/downloads/{filename}")
+            ret = True
+            while ret:
+                ret, img = cap.read()
+                if ret:
+                    frames.append(img)
+            print(np.shape(frames))
+            video = np.stack(frames, axis=0)
+            print(np.shape(video))
+            print(row[' start_seconds'])
+            print(row[' end_seconds'])
+            fps = cap.get(cv2.CAP_PROP_FPS)
+            print(fps)
+            cut_video = video[int(fps * float(row[' start_seconds'])):int(fps * float(row[' end_seconds']))]
+            print(np.shape(cut_video))
+            out = cv2.VideoWriter(f"/fs/class-projects/fall2024/cmsc473/c473g000/cut/{filename.split('.')[0]}_cut.{extension}",
+                    cv2.VideoWriter_fourcc(*'mp4v'), int(fps), (np.shape(cut_video)[2], np.shape(cut_video)[1]), False)
+            for i in range(len(cut_video)):
+                out.write(cut_video[i].astype('uint8'))
+            out.release()
 
             vd = Video()
             no_of_frames_to_returned = 1

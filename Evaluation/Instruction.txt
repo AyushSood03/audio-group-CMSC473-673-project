@@ -1,0 +1,13 @@
+pip install pycocoevalcap
+python main.py
+
+
+
+The following two file shows the format of input file into main.py
+The input filfe should be in the same format as "captions_example.json" and "references_example.json"
+For readability I took part of the data in these two example and constructed two smaller file.
+
+captions_format_example.json
+references_format_example.json
+
+Format our text in this way should be enough for the evaluation to run.

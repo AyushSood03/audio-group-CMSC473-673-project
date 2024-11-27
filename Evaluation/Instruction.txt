@@ -1,10 +1,10 @@
+Due to the file size limitation, I cannot upload everything here.
+Please first go to https://github.com/Aldenhovel/bleu-rouge-meteor-cider-spice-eval4imagecaption/tree/main to download the code.
+
 pip install pycocoevalcap
 python main.py
 
-
-
-The following two file shows the format of input file into main.py
-The input filfe should be in the same format as "captions_example.json" and "references_example.json"
+The input filfe should be in the same format as "captions_example.json" and "references_example.json" in example folder.
 For readability I took part of the data in these two example and constructed two smaller file.
 
 captions_format_example.json

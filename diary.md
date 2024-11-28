@@ -35,3 +35,4 @@ Xinchen Yu: LTU-AS can run now, --mem=64G is needed to load all the models. The 
 
 11/26/2024 Xinchen Yu: aac-metrics package requires some strange depency of JAVA, I cannot understand how to utilize it. Switching to other SPICE matrix github program.
 
+11/26/2024 Xinchen Yu: Evaluation matrix ready to go.

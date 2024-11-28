@@ -59,7 +59,7 @@ def download_column_2(yt_ids, start, stop=None):
     stop = len(yt_ids) if stop is None else stop
 
     # Iterate through the specified number of items
-    for yt_id in yt_ids[start:start+stop]:
+    for yt_id in yt_ids:
         download_video(YOUTUBE_URL_PREFIX + yt_id)
 
 # Taken from https://www.scraperapi.com/blog/how-to-scrape-youtube/
@@ -90,10 +90,11 @@ def main():
 
     print(df.columns)
 
-    for i in range(0, len(df), BATCH_SIZE):
-        print(i)
+    for i in range(120, len(df), BATCH_SIZE):
+        print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
         yt_ids = []
         for j in range(i, i + BATCH_SIZE):
+            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
             yt_ids.append(df.iloc[j]['# YTID'])
         download_column_2(yt_ids, i)
 
@@ -107,8 +108,11 @@ def main():
                 new_filename = filename[:last_index].replace(".", '') + filename[last_index:]
             extension = new_filename.split(".")[1]
             row = df.loc[df['# YTID'] == (filename.split('['))[1].split(']')[0]]
-
-            ffmpeg_extract_subclip(f"../local-downloads/{filename}", float(row[' start_seconds']), float(row[' end_seconds']), f"../local-cut/{new_filename.split('.')[0]}_cut.{extension}")
+            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
+            try:
+                ffmpeg_extract_subclip(f"../local-downloads/{filename}", float(row[' start_seconds']), float(row[' end_seconds']), f"../local-cut/{new_filename.split('.')[0]}_cut.{extension}")
+            except:
+                print("some error")
 
             vd = Video()
             no_of_frames_to_returned = 1
@@ -119,12 +123,19 @@ def main():
             video_file_path = f'../local-cut/{new_filename.split(".")[0]}_cut.{extension}'
 
             # extract keyframes and process data with diskwriter
-            vd.extract_video_keyframes(
-                no_of_frames=no_of_frames_to_returned, file_path=video_file_path,
-                writer=diskwriter)
+            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
+            try:
+                vd.extract_video_keyframes(
+                    no_of_frames=no_of_frames_to_returned, file_path=video_file_path,
+                    writer=diskwriter)
+            except:
+                print("Couldn't extract keyframe")
 
             os.remove(f"../local-downloads/{filename}")
-            os.remove(f'../local-cut/{new_filename.split(".")[0]}_cut.{extension}')
+            try:
+                os.remove(f'../local-cut/{new_filename.split(".")[0]}_cut.{extension}')
+            except:
+                print("No file to remove")
 
 
 if __name__ == '__main__':

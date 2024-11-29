@@ -6,7 +6,7 @@ import torch
 import time
 
 # Define the folder where images are stored
-image_folder = "images"
+image_folder = "/fs/class-projects/fall2024/cmsc473/c473g000/selectedframes/local-selectedframes"
 output_file = "image_descriptions.csv"
 
 # Load the processor and model
@@ -48,7 +48,7 @@ with torch.no_grad():
                     )
 
                     # Move inputs to the correct device and make a batch of size 1
-                    inputs = {k: v.to(device=model.device).unsqueeze(0) for k, v in inputs.items()}
+                    inputs = {k: v.to(device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")).unsqueeze(0) for k, v in inputs.items()}
 
                     # Generate output with max 200 new tokens, stop when "<|endoftext|>" is reached
                     output = model.generate_from_batch(

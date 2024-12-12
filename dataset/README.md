@@ -1,22 +1,16 @@
-"audiocaps_gama_captions.txt" are .txt file of audio caption for 2658 audios in Audiocaps dataset.
+"audiocaps_gama_captions.json" - audio captions for 2658 audios in Audiocaps dataset.
 
-"audioset_gama_captions.txt" are .txt file of audio caption for 8602 audios in Audioset dataset.
+"audioset_gama_captions.json" - audio caption for 8602 audios in Audioset dataset.
 
-"audiocaps_molmo_captions.txt" are .txt file of VLM descriptions for 1882 keyframes in Audiocaps dataset.
+"audiocaps_molmo_captions.json" - VLM keyframe descriptions for 1882 audios in Audiocaps dataset.
 
-"audioset_molmo_captions.txt" are .txt file of VLM descriptions for 7584 keyframes in Audioset dataset.
+"audioset_molmo_captions.json" - VLM keyframe descriptions for 7584 audios in Audioset dataset.
 
 
 
 The format of these .txt file are:
 
-	file_id_1
-	audio_caption_1
-	
-	file_id_2
-	audio_caption_2
-	
-	...
+	youtube_id : description
 
 In "utils" folder, three files are provided for converting the dataset into evaluable json files.
 

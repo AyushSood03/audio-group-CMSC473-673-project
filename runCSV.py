@@ -6,8 +6,20 @@ import torch
 import time
 
 # Define the folder where images are stored
-image_folder = "/fs/class-projects/fall2024/cmsc473/c473g000/selectedframes/local-selectedframes"
-output_file = "image_descriptions.csv"
+# image_folder = "/fs/class-projects/fall2024/cmsc473/c473g000/selectedframes/local-selectedframes"
+image_folder = "/fs/class-projects/fall2024/cmsc473/c473g000/selectedframes/local-acp-selectedframes"
+output_file = "audiocap-0-600.csv"
+
+# Get the total number of images in the folder
+image_files = [filename for filename in os.listdir(image_folder) if filename.endswith((".jpg", ".png", ".jpeg"))]
+total_images = len(image_files)
+
+# Define the start and end indices
+start_index = 0  
+end_index = 600 
+
+# Slice the list based on the start and end indices
+image_files = image_files[start_index:end_index]
 
 # Load the processor and model
 with torch.no_grad():
@@ -27,28 +39,36 @@ with torch.no_grad():
     )
 
     # Open the CSV file
-    with open(output_file, "w", newline="", encoding="utf-8") as f:
+    with open(output_file, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["Image Name", "Description"])
-
-        # Loop through each file in the folder
-        for filename in os.listdir(image_folder):
+        
+        # If the file is new, add a header row
+        if os.stat(output_file).st_size == 0:
+            writer.writerow(["Image Name", "Description"])
+        
+        # Loop through each file in the sliced folder
+        for count, filename in enumerate(image_files, start=start_index + 1):
             image_path = os.path.join(image_folder, filename)
             
+            # Try opening the file as an image
             try:
                 with Image.open(image_path).convert("RGB") as image:
+                    print(f"Processing image {count}/{total_images}: {filename}")
                     start = time.time()
 
                     # Process the image and text
                     inputs = processor.process(
                         images=[image],
+                        # Testing different prompts.
                         text=(
                             "Analyze the provided image and describe it in such a way that someone who cannot see the image can vividly imagine what it might sound like. Focus on the actions, atmosphere, and elements in the scene that suggest specific sounds or an ambiance. Avoid directly referencing visual details but instead translate them into auditory impressions. Your description should evoke a clear sense of the sounds and the mood of the scene."
+                        # "By thoroughly examining each of the contents within the frame, generate a soundscape specifically based on the objects and what is happening within the frame provided."
+                        # "Examine the contents of the frame and generate a short, label-friendly description of the soundscape, focusing on the objects and what is happening within the frame provided."
                         )
                     )
 
-                    # Move inputs to the correct device and make a batch of size 1
-                    inputs = {k: v.to(device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")).unsqueeze(0) for k, v in inputs.items()}
+                    # Move inputs to the correct device
+                    inputs = {k: v.to(device=model.device).unsqueeze(0) for k, v in inputs.items()}
 
                     # Generate output with max 200 new tokens, stop when "<|endoftext|>" is reached
                     output = model.generate_from_batch(
@@ -69,7 +89,7 @@ with torch.no_grad():
                     print("Time taken:", time.time() - start)
             
             except (IOError, Image.UnidentifiedImageError):
-                # If the file is not a valid image, skip it
+                # Skip if the file is not a valid image
                 print(f"Skipping file {filename}: not a valid image.")
 
     print(f"Descriptions saved to {output_file}")

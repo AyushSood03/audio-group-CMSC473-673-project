@@ -1,4 +1,4 @@
-"Audiocaps_GAMA_captions.txt" are .txt file of audio caption for 2847 audios in Audiocaps dataset.
+"Audiocaps_GAMA_captions.txt" are .txt file of audio caption for 2658 audios in Audiocaps dataset.
 
 "Audioset_GAMA_captions.txt" are .txt file of audio caption for 8602 audios in Audioset dataset.
 

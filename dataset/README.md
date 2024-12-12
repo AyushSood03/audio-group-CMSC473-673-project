@@ -1,4 +1,4 @@
-"Audiocaps_GAMA_captions.txt" are .txt file of audio caption for 2847 audios in Audiocaps dataset.
+"Audiocaps_GAMA_captions.txt" are .txt file of audio caption for 2847 audios in Audiocaps dataset.\n
 "Audioset_GAMA_captions.txt" are .txt file of audio caption for 8602 audios in Audioset dataset.
 "Audiocaps_Molmo_captions.txt" are .txt file of VLM descriptions for 1882 keyframes in Audiocaps dataset.
 "Audioset_Molmo_captions.txt" are .txt file of VLM descriptions for 7584 keyframes in Audioset dataset.

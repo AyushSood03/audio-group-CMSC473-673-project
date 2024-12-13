@@ -1,4 +1,3 @@
-Due to the file size limitation, I cannot upload everything here.
 Please first go to https://github.com/Aldenhovel/bleu-rouge-meteor-cider-spice-eval4imagecaption/tree/main to download the code.
 
 pip install pycocoevalcap

@@ -19,7 +19,7 @@ In "utils" folder, three files are provided for converting the dataset into eval
 	"Audiocaps_csv_to_json.py"  changes the original audiocaps dataset .csv file to a json file that can input to evaluation_matrics.
 
 Be aware that the result json file of these two .py are different. The evaluation matrics takes caption and reference in different format.
-For some reason, captions from VLM may requires " encoding='ISO-8859-1' " to read and write with.
+For some reason, captions from VLM may requires " encoding='ISO-8859-1' " to read and write with. It seems like GitHub erases the last '\n' line of the .txt files. Make sure to add them so that the codes can read the .txt files normally.
 
 	"match_data_tobe_evaluated.py" compares the file_ids in both the reference and caption json file. This is necessary when there are data points appear in either reference or caption but not both. 
 The output of the code are two "temp" json files that are ready to be put inside evaluation matrices.

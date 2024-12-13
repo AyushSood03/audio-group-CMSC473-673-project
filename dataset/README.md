@@ -8,7 +8,7 @@
 
 
 
-The format of these .txt file are:
+The format of these .json file are:
 
 	youtube_id : description
 

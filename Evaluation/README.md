@@ -9,16 +9,15 @@ For readability I took part of the data in these two example and constructed two
 captions_format_example.json
 references_format_example.json
 
-Formatting our text in this way should be enough for the evaluation to run.
+In "utils" folder, three files are provided for converting the .txt files in dataset folder into evaluable json files.
 
-In "utils" folder, three files are provided for converting the dataset into evaluable json files.
-
-	"Caption_to_json.py"  changes .txt file to a json file that can input to Evaluation_matrics.
+	"Caption_to_json.py"  changes automated generated caption .txt file to a json file that can input to Evaluation_matrics.
 	
 	"Audiocaps_csv_to_json.py"  changes the original audiocaps dataset .csv file to a json file that can input to evaluation_matrics.
 
 Be aware that the result json file of these two .py are different. The evaluation matrics takes caption and reference in different format.
 For some reason, captions from VLM may requires " encoding='ISO-8859-1' " to read and write with. 
+SPICE metrics evaluation on VLM is not success, it is unknown that whether the length of VLM captions causing extra long time to evaluate the similarity, or SPICE metrics package enters deadlock when encountering this specific encoding.
 
 It seems like GitHub erases the last '\n' line of the .txt files. Make sure to add them so that the codes can read the .txt files normally.
 

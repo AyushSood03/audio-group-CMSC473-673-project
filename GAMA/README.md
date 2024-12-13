@@ -2,7 +2,7 @@ The GAMA model can be found at https://github.com/Sreyan88/GAMA
 
 Follow the instruction there to set up the environment
 
-Make sure to follow the error message to change all the model directory in the code.
+Make sure to follow the error messages to change all the model directories in the code.
 
 Instead of running:
 	

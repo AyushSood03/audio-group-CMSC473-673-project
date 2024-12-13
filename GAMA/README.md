@@ -14,4 +14,4 @@ The script used in our project is:
 
 "GAMA_API_TEST.py" is the code for batch inference. 
 
-Be aware that sometimes ffmpeg would not be able to recognize the language in the file name, i.e. Russian and Japanese. In our project, these files are manually removed and renamed.
+Be aware that sometimes ffmpeg would not be able to recognize the language in the file name, i.e. Russian and Japanese, causing the batch inference to be stopped. In our project, these files are manually removed and renamed.

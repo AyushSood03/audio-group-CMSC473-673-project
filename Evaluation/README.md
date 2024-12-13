@@ -1,4 +1,4 @@
-Please first go to https://github.com/Aldenhovel/bleu-rouge-meteor-cider-spice-eval4imagecaption/tree/main to download the code.
+Please first go to https://github.com/Aldenhovel/bleu-rouge-meteor-cider-spice-eval4imagecaption/tree/main to download the code for evaluation metrics.
 
 	pip install pycocoevalcap
 	python main.py

@@ -13,3 +13,5 @@ The script used in our project is:
 	python inference_gradio_gama.py
 
 "GAMA_API_TEST.py" is the code for batch inference. 
+
+Be aware that sometimes ffmpeg would not be able to recognize the language in the file name, i.e. Russian and Japanese. In our project, these files are manually removed, since the percentage of these audios are not large.

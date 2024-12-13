@@ -1,0 +1,15 @@
+The GAMA model can be found at https://github.com/Sreyan88/GAMA
+
+Follow the instruction there to set up the environment
+
+Make sure to follow the error message to change all the model directory in the code.
+
+Instead of running:
+	
+	python gama_inf.py
+
+The script used in our project is:
+	
+	python inference_gradio_gama.py
+
+"GAMA_API_TEST.py" is the code for batch inference. 

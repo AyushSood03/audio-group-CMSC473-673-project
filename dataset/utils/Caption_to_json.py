@@ -28,9 +28,9 @@ for image_id in caption_dict.keys():
     json_list.append(temp)
 real_json = json.dumps(json_list)
 
-'''
+#Change filename accordingly
 f = open("Audiocaps_GAMA_captions.json","w")
 f.write(real_json)
 f.close()
 
-'''
+

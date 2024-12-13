@@ -1,6 +1,8 @@
 from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
+# This script runs the evaluation metrics
 
+# Only these two file directories need to be changed
 annotation_file = 'references_format_example.json'
 results_file = 'captions_format_example.json'
 

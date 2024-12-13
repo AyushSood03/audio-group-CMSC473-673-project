@@ -3,10 +3,11 @@ import json
 #Two temp .json file are created. These two json files can be directly inputted into Evaluation metrics.
 #The file need to be run only when data points in ground truth json is different from automated generated data points json.
 
-# Open and read the JSON file
+# Ground Truth json
 with open('Audiocaps_train_and_val.json', 'r') as file:
     audiocap = json.load(file)
 
+# Automated generated caption json
 with open('Audiocaps_extra_data.json', 'r') as file:
     Audio_Captions = json.load(file)
 

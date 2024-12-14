@@ -7,3 +7,5 @@
 `experimental_code` Contains all the code pushed to GitHub that was not used in our final dataset generation. Mostly pushed for sharing purposes.
 
 `gama` Contains code used to run GAMA model.
+
+`llama_variations` Contains code and datasets used for label enhancing the VLM generated labels

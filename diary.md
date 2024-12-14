@@ -3,6 +3,7 @@ Jacob: Setup python environment to ensure consistency accross all groupmates. Ra
 
 10/10/2024
 Ayush: installed ffmpeg, got video -> audio conversion working
+
 Jacob: Explored the shape of Audioset data. Identified formatting issues in label column. Resolved them to enable easy pandas integration.
 TODO next: add python code to read audio into array
 

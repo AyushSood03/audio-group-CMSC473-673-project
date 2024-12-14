@@ -91,10 +91,8 @@ def main():
     print(df.columns)
 
     for i in range(120, len(df), BATCH_SIZE):
-        print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
         yt_ids = []
         for j in range(i, i + BATCH_SIZE):
-            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
             yt_ids.append(df.iloc[j]['# YTID'])
         download_column_2(yt_ids, i)
 
@@ -108,7 +106,6 @@ def main():
                 new_filename = filename[:last_index].replace(".", '') + filename[last_index:]
             extension = new_filename.split(".")[1]
             row = df.loc[df['# YTID'] == (filename.split('['))[1].split(']')[0]]
-            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
             try:
                 ffmpeg_extract_subclip(f"../local-downloads/{filename}", float(row[' start_seconds']), float(row[' end_seconds']), f"../local-cut/{new_filename.split('.')[0]}_cut.{extension}")
             except:
@@ -123,7 +120,6 @@ def main():
             video_file_path = f'../local-cut/{new_filename.split(".")[0]}_cut.{extension}'
 
             # extract keyframes and process data with diskwriter
-            print("PROGRESS!!!!!!!!!!!!!!!!" + str(i) + "/" + str(len(df)))
             try:
                 vd.extract_video_keyframes(
                     no_of_frames=no_of_frames_to_returned, file_path=video_file_path,
